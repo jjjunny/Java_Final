@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * @author YourName
+ * @author Kim Hyeong Jun
  * @version 1.0
  * @since 2024-12-09
  *

@@ -9,12 +9,11 @@ import java.awt.*;
  * @version 1.0
  * @since 2024-12-09
  *
- * 글로벌 브릿지 프로그램의 참가자 등록을 위한 GUI 패널 클래스입니다.
+ * 글로벌 브릿지 프로그램의 참가자 등록을 위한 GUI 패널 클래스다.
  *
  * <p>
- * 이 클래스는 새로운 참가자의 정보를 입력받기 위한 폼을 제공합니다.
- * 사용자로부터 이름, 학번, 전공, 언어, 학년 정보를 입력받아
- * 새로운 참가자를 시스템에 등록합니다.
+ * 이 클래스는 새로운 참가자의 정보를 입력받기 위한 폼을 제공
+ * 사용자로부터 이름, 학번, 전공, 언어, 학년 정보를 입력받아 새로운 참가자를 시스템에 등록
  * </p>
  *
  * <p>
@@ -51,7 +50,7 @@ public class RegistrationPanel extends JPanel {
     private JComboBox<Integer> gradeBox;
 
     /**
-     * RegistrationPanel을 생성하고 초기화합니다.
+     * RegistrationPanel을 생성하고 초기화
      *
      * @param mainProgram 메인 프로그램 객체
      */
@@ -62,11 +61,10 @@ public class RegistrationPanel extends JPanel {
     }
 
     /**
-     * 패널의 UI 컴포넌트들을 초기화하고 배치합니다.
+     * 패널의 UI 컴포넌트들을 초기화하고 배치
      *
      * <p>
-     * GridBagLayout을 사용하여 컴포넌트들을 정렬하고,
-     * 각 입력 필드와 레이블을 배치합니다.
+     * GridBagLayout을 사용하여 컴포넌트들을 정렬하고, 각 입력 필드와 레이블을 배치
      * </p>
      */
     private void initComponents() {
@@ -98,7 +96,7 @@ public class RegistrationPanel extends JPanel {
     }
 
     /**
-     * 레이블과 컴포넌트를 지정된 위치에 추가합니다.
+     * 레이블과 컴포넌트를 지정된 위치에 추가
      *
      * @param label 필드 레이블
      * @param component 입력 컴포넌트
@@ -116,29 +114,63 @@ public class RegistrationPanel extends JPanel {
     }
 
     /**
-     * 입력된 정보를 바탕으로 새로운 참가자를 등록합니다.
+     * 입력된 정보를 바탕으로 새로운 참가자를 등록
      *
      * <p>
-     * 입력된 정보의 유효성을 검사하고, 유효한 경우 새로운 Participant 객체를
-     * 생성하여 시스템에 등록합니다. 등록 성공/실패 여부를 사용자에게 알립니다.
+     * 입력된 정보의 유효성을 검사하고, 유효한 경우 새로운 Participant 객체를 생성하여 시스템에 등록
+     * 등록 성공/실패 여부를 사용자에게 알림
+     * 이름,전공,학번 텍스트 필드가 비어있으면 에러 창 뜸
      * </p>
      */
     private void registerParticipant() {
+        String name = nameField.getText();
+        String major = majorField.getText();
+        String studentId = studentIdField.getText();
+
+        // 공백 검사
+        if (name.trim().isEmpty() || major.trim().isEmpty() || studentId.trim().isEmpty()) {
+            String errorMessage = "";
+            if (name.trim().isEmpty()) {
+                errorMessage = "이름 입력란이 비어 있습니다.";
+            } else if (major.trim().isEmpty()) {
+                errorMessage = "전공 입력란이 비어 있습니다.";
+            } else {
+                errorMessage = "학번 입력란이 비어 있습니다.";
+            }
+            JOptionPane.showMessageDialog(this, errorMessage, "오류", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // 이름과 전공은 한글/영어만 허용
+        if (!name.matches("^[a-zA-Z가-힣]+$") || !major.matches("^[a-zA-Z가-힣]+$")) {
+            JOptionPane.showMessageDialog(this,
+                    "이름과 전공은 한글 또는 영어만 입력 가능합니다.",
+                    "오류",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // 학번은 숫자만 허용
+        if (!studentId.matches("^\\d+$")) {
+            JOptionPane.showMessageDialog(this,
+                    "학번은 숫자만 입력 가능합니다.",
+                    "오류",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // 유효성 검사를 통과한 경우에만 참가자 등록 진행
         try {
             Participant participant = new Participant(
-                    nameField.getText(),
-                    studentIdField.getText(),
-                    majorField.getText(),
+                    name,
+                    studentId,
+                    major,
                     languageBox.getSelectedItem().toString(),
                     (Integer)gradeBox.getSelectedItem()
             );
-
             mainProgram.addParticipant(participant);
             clearFields();
-            JOptionPane.showMessageDialog(this,
-                    "참가자가 등록되었습니다. (" +
-                            (participant.isMentor() ? "멘토" : "멘티") +
-                            "로 배정됨)");
+            JOptionPane.showMessageDialog(this, "참가자가 등록되었습니다.");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
                     "등록 중 오류가 발생했습니다: " + e.getMessage(),

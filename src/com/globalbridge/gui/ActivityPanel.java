@@ -7,7 +7,7 @@ import java.awt.*;
 import java.util.Date;
 
 /**
- * @author YourName
+ * @author Kim Hyeong Jun
  * @version 1.0
  * @since 2024-12-09
  *
