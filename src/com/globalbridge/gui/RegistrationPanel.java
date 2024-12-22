@@ -9,6 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * @author Kim Hyeong Jun
+ * @version 1.0
+ * @since 2024-12-09
+ *
+ * @version 1.1
+ * @since 2024-12-21
+ *
+ * @version 1.2
+ * @since 2024-12-23
  * 참가자 등록을 위한 GUI 패널 클래스.
  *
  * <p>
