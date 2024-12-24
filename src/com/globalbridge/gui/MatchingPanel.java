@@ -42,6 +42,7 @@ public class MatchingPanel extends JPanel {
      *
      * @param mainProgram 메인 프로그램 객체. 참가자 데이터와 매칭 정보를 관리합니다.
      */
+
     public MatchingPanel(GlobalBridgeProgram mainProgram) {
         this.mainProgram = mainProgram;
         setLayout(new BorderLayout(10, 10));
