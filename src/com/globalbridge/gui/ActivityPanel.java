@@ -40,6 +40,10 @@ public class ActivityPanel extends JPanel {
     /**
      * ActivityPanel 생성자.
      *
+     * <p>
+     * 이 생성자는 패널의 레이아웃을 초기화하고 UI 컴포넌트를 설정합니다.
+     * </p>
+     *
      * @param mainProgram 메인 프로그램 객체. 활동 데이터를 관리합니다.
      */
     public ActivityPanel(GlobalBridgeProgram mainProgram) {
@@ -52,6 +56,10 @@ public class ActivityPanel extends JPanel {
 
     /**
      * 패널의 UI 컴포넌트들을 초기화하고 배치합니다.
+     * <p>
+     * 입력 필드, 버튼 및 활동 이력 표시 영역을 설정하며,
+     * 버튼 클릭 이벤트를 처리하는 리스너를 추가합니다.
+     * </p>
      */
     private void initComponents() {
         JPanel inputPanel = new JPanel(new GridBagLayout());
@@ -124,7 +132,13 @@ public class ActivityPanel extends JPanel {
 
     /**
      * 새로운 활동을 등록합니다.
+     * <p>
+     * 사용자가 입력한 활동 내용과 장소를 기반으로 새로운 {@link Activity} 객체를 생성하여
+     * 해당 멘토-멘티 쌍의 활동 목록에 추가합니다. 입력 필드는 초기화되며,
+     * 활동 이력이 업데이트됩니다.
+     * </p>
      */
+
     private void registerActivity() {
         if (pairSelector.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(this,

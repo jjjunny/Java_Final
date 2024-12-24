@@ -24,6 +24,13 @@ import java.util.List;
  * 이 클래스는 글로벌 브릿지 프로그램에서 참가자를 등록하기 위한 사용자 인터페이스를 제공합니다.
  * 사용자는 이름, 학번, 전공, 언어, 학년 정보를 입력한 후 등록 버튼을 클릭하여 새로운 참가자를 시스템에 추가할 수 있습니다.
  * 또한, 참가자 데이터를 파일에 저장하거나 불러오는 기능도 제공합니다.
+ *
+ * 주요 기능:
+ * <ul>
+ *   <li>참가자 등록</li>
+ *   <li>참가자 데이터 저장 및 불러오기</li>
+ *   <li>입력 필드 초기화</li>
+ * </ul>
  * </p>
  */
 public class RegistrationPanel extends JPanel {
@@ -48,6 +55,11 @@ public class RegistrationPanel extends JPanel {
 
     /**
      * 패널의 UI 컴포넌트를 초기화하고 배치합니다.
+     *
+     * <p>
+     * 상단에는 제목 레이블을 배치하고, 중앙에는 이름, 학번, 전공, 언어, 학년 입력 필드를 포함한 폼을 배치합니다.
+     * 하단에는 등록, 저장, 불러오기 버튼이 포함된 버튼 패널을 배치합니다.
+     * </p>
      */
     private void initComponents() {
         // 상단 제목 패널
@@ -111,6 +123,17 @@ public class RegistrationPanel extends JPanel {
 
     /**
      * 레이블과 컴포넌트를 지정된 위치에 추가합니다.
+     *
+     * <p>
+     * 주어진 레이블 텍스트와 컴포넌트를 {@link JPanel}에 추가하며,
+     * GridBagConstraints를 사용해 위치를 지정합니다.
+     * </p>
+     *
+     * @param panel      컴포넌트를 추가할 {@link JPanel}.
+     * @param labelText  레이블에 표시할 텍스트.
+     * @param component  추가할 {@link JComponent} (예: JTextField, JComboBox).
+     * @param row        컴포넌트를 배치할 행 번호.
+     * @param gbc        {@link GridBagConstraints} 객체로 레이아웃 제어에 사용됩니다.
      */
     private void addComponent(JPanel panel,
                               String labelText,
@@ -139,6 +162,16 @@ public class RegistrationPanel extends JPanel {
 
     /**
      * 참가자를 등록하는 메서드.
+     *
+     * <p>
+     * 사용자가 입력한 이름, 학번, 전공 정보를 기반으로 새로운 {@link Participant} 객체를 생성하고,
+     * 글로벌 브릿지 프로그램에 등록합니다. 입력값의 유효성을 검사하며,
+     * 유효하지 않은 경우 경고 메시지를 표시합니다.
+     * </p>
+     *
+     * <p>
+     * 등록이 완료되면 입력 필드를 초기화하고 성공 메시지를 표시합니다.
+     * </p>
      */
     private void registerParticipant() {
         String name = nameField.getText().trim();
@@ -198,6 +231,20 @@ public class RegistrationPanel extends JPanel {
 
     /**
      * 참가자 데이터를 파일에 저장합니다.
+     *
+     * <p>
+     * 현재 등록된 모든 참가자 데이터를 "participants.txt" 파일에 저장합니다.
+     * 각 참가자는 CSV 형식으로 저장되며, 형식은 다음과 같습니다:
+     * </p>
+     *
+     * <pre>
+     * [이름],[학번],[전공],[언어],[학년]
+     * </pre>
+     *
+     * <p>
+     * 저장이 성공적으로 완료되면 성공 메시지를 표시하며,
+     * 저장 중 오류가 발생할 경우 오류 메시지를 표시합니다.
+     * </p>
      */
     private void saveParticipantsToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("participants.txt"))) {
@@ -223,6 +270,21 @@ public class RegistrationPanel extends JPanel {
 
     /**
      * 참가자 데이터를 파일에서 불러옵니다.
+     *
+     * <p>
+     * "participants.txt" 파일에서 저장된 참가자 데이터를 읽어와
+     * 글로벌 브릿지 프로그램에 로드합니다. 각 줄은 CSV 형식으로 되어 있으며,
+     * 데이터는 다음과 같은 형식을 따릅니다:
+     * </p>
+     *
+     * <pre>
+     * [이름],[학번],[전공],[언어],[학년]
+     * </pre>
+     *
+     * <p>
+     * 데이터가 성공적으로 로드되면 관련 UI를 업데이트하고 사용자에게 성공 메시지를 표시하며,
+     * 파일 읽기 중 오류가 발생할 경우 오류 메시지를 표시합니다.
+     * </p>
      */
     private void loadParticipantsFromFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader("participants.txt"))) {
@@ -252,6 +314,8 @@ public class RegistrationPanel extends JPanel {
 
     /**
      * 모든 입력 필드를 초기화합니다.
+     *
+     * <p>입력 필드와 콤보박스의 선택값을 초기 상태로 설정합니다.</p>
      */
     private void clearFields() {
         nameField.setText("");

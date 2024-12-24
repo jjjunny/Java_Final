@@ -29,7 +29,16 @@ import java.util.List;
  * </p>
  */
 public class MatchingPanel extends JPanel {
-
+    /**
+     * 글로벌 브릿지 프로그램의 메인 객체.
+     *
+     * <p>참가자 데이터와 매칭 정보를 관리합니다.</p>
+     *
+     * 멘토 목록을 관리하는 리스트 모델.
+     * 멘토 목록을 표시하는 JList 컴포넌트.
+     * 멘티 목록을 표시하는 JList 컴포넌트.
+     * 현재 매칭 결과를 표시하는 텍스트 영역.
+     */
     private GlobalBridgeProgram mainProgram;
     private DefaultListModel<Participant> mentorModel;
     private DefaultListModel<Participant> menteeModel;
@@ -39,6 +48,11 @@ public class MatchingPanel extends JPanel {
 
     /**
      * MatchingPanel 생성자.
+     *
+     * <p>
+     * 패널의 레이아웃과 UI 컴포넌트를 초기화하며, 참가자 데이터를 기반으로
+     * 멘토 및 멘티 목록을 업데이트합니다.
+     * </p>
      *
      * @param mainProgram 메인 프로그램 객체. 참가자 데이터와 매칭 정보를 관리합니다.
      */
@@ -52,6 +66,11 @@ public class MatchingPanel extends JPanel {
 
     /**
      * 패널의 UI 컴포넌트를 초기화하고 배치합니다.
+     *
+     * <p>
+     * 멘토 및 멘티 목록, 버튼, 매칭 결과 영역을 설정하며,
+     * 버튼 클릭 이벤트를 처리하는 리스너를 추가합니다.
+     * </p>
      */
     private void initComponents() {
         mentorModel = new DefaultListModel<>();
@@ -100,6 +119,10 @@ public class MatchingPanel extends JPanel {
 
     /**
      * 제목이 있는 스크롤 가능한 리스트 패널을 생성합니다.
+     *
+     * @param title 리스트 패널의 제목
+     * @param list  표시할 JList 컴포넌트
+     * @return 생성된 JPanel 객체
      */
     private JPanel createListPanel(String title, JList<Participant> list) {
         JPanel panel = new JPanel(new BorderLayout());
@@ -110,6 +133,10 @@ public class MatchingPanel extends JPanel {
 
     /**
      * 멘토와 멘티 목록을 최신 데이터로 업데이트합니다.
+     *
+     * <p>
+     * 참가자 데이터를 기반으로 멘토와 멘티를 분류하여 각각의 리스트 모델에 추가합니다.
+     * </p>
      */
     public void updateLists() {
         mentorModel.clear();
@@ -128,6 +155,11 @@ public class MatchingPanel extends JPanel {
 
     /**
      * 자동 매칭을 수행합니다.
+     *
+     * <p>
+     * 멘토와 멘티를 순서대로 매칭하며,
+     * 가능한 모든 쌍이 매칭될 때까지 진행됩니다.
+     * </p>
      */
     private void performAutoMatching() {
         List<Participant> mentors = new ArrayList<>();
@@ -159,6 +191,17 @@ public class MatchingPanel extends JPanel {
 
     /**
      * 수동 매칭을 수행합니다.
+     *
+     * <p>
+     * 사용자가 멘토 목록과 멘티 목록에서 각각 하나씩 선택한 후,
+     * 해당 멘토와 멘티를 매칭합니다. 매칭이 완료되면 결과를 업데이트하고
+     * 사용자에게 성공 메시지를 표시합니다.
+     * </p>
+     *
+     * <p>
+     * 만약 멘토 또는 멘티가 선택되지 않은 경우, 경고 메시지를 표시하고
+     * 작업을 종료합니다.
+     * </p>
      */
     private void performManualMatching() {
         if (mentorList.getSelectedValue() == null || menteeList.getSelectedValue() == null) {
@@ -184,6 +227,15 @@ public class MatchingPanel extends JPanel {
 
     /**
      * 현재까지의 매칭 결과를 텍스트 영역에 업데이트합니다.
+     *
+     * <p>
+     * 글로벌 브릿지 프로그램의 모든 매칭 데이터를 가져와
+     * 텍스트 형식으로 변환한 후, 결과 영역에 표시합니다.
+     * </p>
+     *
+     * <p>
+     * 각 매칭은 "멘토: [멘토 이름] (Korean) - 멘티: [멘티 이름] (English)" 형식으로 출력됩니다.
+     * </p>
      */
     private void updateMatchingResult() {
         StringBuilder result = new StringBuilder("현재 매칭 현황:\n\n");
@@ -199,6 +251,20 @@ public class MatchingPanel extends JPanel {
 
     /**
      * 매칭 데이터를 파일에 저장합니다.
+     *
+     * <p>
+     * 현재까지 생성된 모든 멘토-멘티 매칭 데이터를 "matches.txt" 파일에 저장합니다.
+     * 각 매칭은 CSV 형식으로 저장되며, 형식은 다음과 같습니다:
+     * </p>
+     *
+     * <pre>
+     * [멘토 이름],[멘토 학번],[멘티 이름],[멘티 학번]
+     * </pre>
+     *
+     * <p>
+     * 저장이 성공적으로 완료되면 사용자에게 성공 메시지를 표시하며,
+     * 저장 중 오류가 발생할 경우 오류 메시지를 표시합니다.
+     * </p>
      */
     private void saveMatchesToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("matches.txt"))) {
@@ -223,6 +289,21 @@ public class MatchingPanel extends JPanel {
 
     /**
      * 매칭 데이터를 파일에서 불러옵니다.
+     *
+     * <p>
+     * "matches.txt" 파일에서 저장된 매칭 데이터를 읽어와
+     * 글로벌 브릿지 프로그램에 로드합니다. 각 줄은 CSV 형식으로 되어 있으며,
+     * 데이터는 다음과 같은 형식을 따릅니다:
+     * </p>
+     *
+     * <pre>
+     * [멘토 이름],[멘토 학번],[멘티 이름],[멘티 학번]
+     * </pre>
+     *
+     * <p>
+     * 데이터가 성공적으로 로드되면 결과를 업데이트하고 사용자에게 성공 메시지를 표시하며,
+     * 파일 읽기 중 오류가 발생할 경우 오류 메시지를 표시합니다.
+     * </p>
      */
     private void loadMatchesFromFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader("matches.txt"))) {
